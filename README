@@ -1,0 +1,32 @@
+This directory contains a simple implementation of the SEMANTIC PROFILES 
+algorithm by Hofmanninger et al. When using this code, please cite the
+following paper: 
+
+@inproceedings{hofmanninger2015mapping,
+  title={Mapping Visual Features to Semantic Profiles for Retrieval in Medical Imaging},
+  author={Hofmanninger, Johannes and Langs, Georg},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  pages={457--465},
+  year={2015}
+}
+
+Look at toyExample.m for an exemplary application.
+
+To generate semantic profiles you need to perform a training:
+
+        % specification of learning parameters
+        p.num_ferns = 1200;      % number of ferns to be generated (1200 default)
+        p.ferns_depth = 8;       % depth of one fern (e.g. 2^8 partitions per fern) (8 default)
+        p.sub_dims = 9;          % number of sub-dimensions used on each split (usually <12) (9 default)
+        p.partitionRes = 5000;   % parameter K in the Paper.  (5000 default)
+        p.classSmoothing = 20;   % parameter gamma in the paper (prevents overfitting) (20 default)
+
+        % training of the model
+        % trainingData is dxn
+        % weakLabels is a binary matrix nxC where C is the number of classes
+        % where 1 indicates weak membership of the class. (o 
+        model = sptrainmodel(trainingData,weakLabels,p);
+
+and use the model for novel records:
+
+        profiles = spgetprofiles(testData,model);
